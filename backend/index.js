@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const mongoose = require('mongoose');
+const Note = require('./models/note');
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method);
@@ -35,13 +38,18 @@ let notes = [
     important: true,
   },
 ];
-
+// Get  root route
 app.get('/', (request, response) => {
   response.send('<h1>Hello Awesome World</h1>');
 });
+
+// Get all notes
 app.get('/api/notes', (request, response) => {
-  response.json(notes);
+  Note.find({}).then((notes) => {
+    response.json(notes);
+  });
 });
+// Get single note
 app.get('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id);
   const note = notes.find((note) => {
@@ -54,17 +62,19 @@ app.get('/api/notes/:id', (request, response) => {
     response.status(404).end();
   }
 });
+// Delete
 app.delete('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id);
   notes = notes.filter((note) => note.id !== id);
   response.status(204).end();
 });
-
+// new Id
 const generatedId = () => {
   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
   return maxId + 1;
 };
 
+// Post
 app.post('/api/notes', (request, response) => {
   const body = request.body;
   if (!body.content) {
@@ -83,7 +93,7 @@ app.post('/api/notes', (request, response) => {
 });
 
 app.use(unknownEndpoint);
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
