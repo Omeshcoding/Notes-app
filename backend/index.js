@@ -22,6 +22,8 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message);
   if (error.name === 'castError') {
     return response.status(400).send({ error: 'malformatting id' });
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message });
   }
   next(error);
 };
@@ -30,24 +32,6 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 app.use(express.static('build'));
-
-let notes = [
-  {
-    id: 1,
-    content: 'HTML is easy',
-    important: true,
-  },
-  {
-    id: 2,
-    content: 'Browser can execute only JavaScript',
-    important: false,
-  },
-  {
-    id: 3,
-    content: 'GET and Post are the most important methods of HTTP protocol',
-    important: true,
-  },
-];
 
 // Get all notes
 app.get('/api/notes', (request, response) => {
@@ -77,14 +61,13 @@ app.delete('/api/notes/:id', (request, response) => {
 });
 // Update
 app.put('/api/notes/:id', (request, response, next) => {
-  const body = request.body;
-  console.log(request.body);
-  const note = {
-    content: body.content,
-    important: body.important,
-  };
+  const { content, important } = request.body;
 
-  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+  Note.findByIdAndUpdate(
+    request.params.id,
+    { content, important },
+    { new: true, runValidators: true, context: 'query' }
+  )
     .then((updatedNote) => {
       response.json(updatedNote);
     })
@@ -92,21 +75,20 @@ app.put('/api/notes/:id', (request, response, next) => {
 });
 
 // Post
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
   const body = request.body;
-
-  if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' });
-  }
 
   const note = new Note({
     content: body.content,
     important: body.important || false,
   });
 
-  note.save().then((savedNote) => {
-    response.json(savedNote);
-  });
+  note
+    .save()
+    .then((savedNote) => {
+      response.json(savedNote);
+    })
+    .catch((error) => next(error));
 });
 
 app.use(unknownEndpoint);
