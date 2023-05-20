@@ -58,7 +58,10 @@ const App = (props) => {
     noteService
       .update(id, changedNote)
       .then((returnedNote) => {
-        setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+        const note = notes.map((note) =>
+          note.id !== id ? note : returnedNote
+        );
+        setNotes(note);
       })
       .catch((error) => {
         setErrorMessage(
@@ -80,7 +83,7 @@ const App = (props) => {
       <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
+          show {showAll ? 'all' : 'important'}
         </button>
       </div>
       <ul>
