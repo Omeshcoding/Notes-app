@@ -24,12 +24,6 @@ const note = new Note({
   content: 'This is Freaking Working ',
   important: true,
 });
-// Note.find({}).then((result) => {
-//   result.forEach((note) => {
-//     console.log(note);
-//   });
-//   mongoose.connection.close();
-// });
 
 note.save().then((result) => {
   console.log(result);

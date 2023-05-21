@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const mongoose = require('mongoose');
 const Note = require('./models/note');
 
 const requestLogger = (request, response, next) => {
@@ -52,7 +51,7 @@ app.get('/api/notes/:id', (error, request, response, next) => {
     .catch((error) => next(error));
 });
 // Delete
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndRemove(request.params.id)
     .then((result) => {
       response.status(204).end();
