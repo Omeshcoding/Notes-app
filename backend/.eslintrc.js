@@ -26,7 +26,7 @@ module.exports = {
     ],
 
     'no-console': 0,
-    'eslint linebreak-style': ['error', 'unix'],
+    // 'eslint linebreak-style': ['error', 'unix'],
     // 'linebreak-style': 0,
   },
 };
