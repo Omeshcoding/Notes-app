@@ -6,12 +6,13 @@ const api = supertest(app);
 const Note = require('../models/note');
 
 mongoose.set('bufferTimeoutMS', 300000);
+
 beforeEach(async () => {
   await Note.deleteMany({});
-  let noteObject = new Note(helper.initialNotes[0]);
-  await noteObject.save();
-  noteObject = new Note(helper.initialNotes[1]);
-  await noteObject.save();
+
+  let noteObjects = helper.initialNotes.map((note) => new Note(note));
+  const promiseArray = noteObjects.map((note) => note.save());
+  await Promise.all(promiseArray);
 });
 
 test('notes are returned as json', async () => {
