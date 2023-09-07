@@ -6,3 +6,16 @@ Content-Type: application/json
  "content" : "VS code rest client  is a pretty handy tool",
  "important":true
 }
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "username": "root",
+    "name": "Superuser",
+    "password": "salainen"
+}
+
+###
+GET  http://localhost:3001/api/users

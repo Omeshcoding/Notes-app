@@ -1,7 +1,6 @@
 const Note = require('../models/note');
 const User = require('../models/user');
 
-
 const initialNotes = [
   {
     content: 'HTML is easy',
@@ -26,14 +25,14 @@ const notesInDb = async () => {
 };
 
 // Checks state of the db when user is created
-const userInDb = asyn()=> {
-  const users = await User.find({})
-  return users.map(u=> u.toJSON())
-}
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
 
 module.exports = {
   initialNotes,
   nonExistingId,
   notesInDb,
-  userInDb
+  usersInDb,
 };
