@@ -4,8 +4,12 @@ import Note from './components/Note';
 import noteService from './services/notes';
 import Notification from './components/Notification';
 import Footer from './components/Footer';
+import LoginForm from './components/LoginForm';
+import NoteForm from './components/NoteForm';
+import Togglable from './components/Toggleable';
 
 const App = () => {
+  const [loginVisible, setLoginVisible] = useState(false);
   const [notes, setNotes] = useState(null);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
@@ -60,8 +64,22 @@ const App = () => {
       }, 5000);
     }
   };
-  console.log(window.localStorage.removeItem('loggedNoteappUser'));
-  const loginForm = () => {};
+
+  const loginForm = () => {
+    return (
+      <div>
+        <Togglable buttonLabel="login">
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+        </Togglable>
+      </div>
+    );
+  };
   const noteForm = () => {};
 
   // Toggle importance
@@ -112,27 +130,6 @@ const App = () => {
           {noteForm()}
         </div>
       )}
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
@@ -148,10 +145,13 @@ const App = () => {
           />
         ))}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit"> save</button>
-      </form>
+      <Togglable buttonLabel="new note">
+        <NoteForm
+          handleChange={handleNoteChange}
+          value={newNote}
+          onSubmit={addNote}
+        />
+      </Togglable>
       <Footer />
     </div>
   );
