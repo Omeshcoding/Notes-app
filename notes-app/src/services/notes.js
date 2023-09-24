@@ -28,8 +28,6 @@ const create = async (newObject) => {
   const response = await axios.post(baseUrl, newObject, config);
   console.log(response);
   return response.data;
-  // const request = axios.post(baseUrl, newObject);
-  // return request.then((response) => response.data);
 };
 
 const update = (id, newObject) => {

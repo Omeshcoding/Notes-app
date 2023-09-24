@@ -22,7 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.4.0",
     "mongoose": "^7.1.1",
-    "mongoose-unique-validator": "^4.0.0"
+    "mongoose-unique-validator": "^4.0.0",
+    "prop-types": "^15.8.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

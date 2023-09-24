@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Note from './components/Note';
 import noteService from './services/notes';
 import Notification from './components/Notification';
@@ -27,9 +27,11 @@ const App = () => {
   const loginForm = () => {
     return (
       <div>
-        <Togglable buttonLabel="login">
-          <LoginForm />
-        </Togglable>
+        {!user && (
+          <Togglable buttonLabel="login">
+            <LoginForm setUser={setUser} setErrorMessage={setErrorMessage} />
+          </Togglable>
+        )}
       </div>
     );
   };
@@ -58,7 +60,10 @@ const App = () => {
         setNotes(notes.filter((n) => n.id !== id));
       });
   };
-  const logoutUser = () => window.localStorage.removeItem('loggedNoteappUser');
+  const logoutUser = () => {
+    window.localStorage.removeItem('loggedNoteappUser');
+    setUser(null);
+  };
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
       setNotes(initialNotes);
@@ -76,7 +81,6 @@ const App = () => {
   if (!notes) {
     return null;
   }
-  // console.log();
   return (
     <div>
       <h1>Notes</h1>
@@ -84,12 +88,12 @@ const App = () => {
       <div>{loginForm()}</div>
       <br />
       {user && (
-        <div>
+        <>
           <p>
             {user.name} logged in <button onClick={logoutUser}>logout</button>{' '}
           </p>
           {noteForm()}
-        </div>
+        </>
       )}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
