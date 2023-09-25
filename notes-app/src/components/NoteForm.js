@@ -1,6 +1,10 @@
-import { useState } from 'react';
-
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 const NoteForm = ({ createNote }) => {
+  NoteForm.propTypes = {
+    createNote: PropTypes.func.isRequired,
+  };
+
   const [newNote, setNewNote] = useState('');
 
   const addNote = (event) => {

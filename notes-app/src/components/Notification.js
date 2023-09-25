@@ -1,6 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Notification = (props) => {
+  Notification.propTypes = {
+    message: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  };
   if (props.message === null) {
     return null;
   }
