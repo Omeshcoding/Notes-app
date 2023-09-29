@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const Notification = (props) => {
   Notification.propTypes = {
-    message: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
+    message: PropTypes.string,
+    type: PropTypes.string,
   };
   if (props.message === null) {
     return null;
