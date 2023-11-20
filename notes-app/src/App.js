@@ -35,7 +35,6 @@ const App = () => {
       </div>
     );
   };
-  const noteForm = () => {};
 
   // Toggle importance
   const toggleImportanceOf = (id) => {
@@ -64,6 +63,13 @@ const App = () => {
     window.localStorage.removeItem('loggedNoteappUser');
     setUser(null);
   };
+  const noteForm = () => {
+    return (
+      <Togglable buttonLabel="new note" ref={noteFormRef}>
+        <NoteForm createNote={addNote} />
+      </Togglable>
+    );
+  };
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
       setNotes(initialNotes);
@@ -88,12 +94,12 @@ const App = () => {
       <div>{loginForm()}</div>
       <br />
       {user && (
-        <>
+        <div>
           <p>
             {user.name} logged in <button onClick={logoutUser}>logout</button>{' '}
           </p>
           {noteForm()}
-        </>
+        </div>
       )}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
@@ -109,9 +115,7 @@ const App = () => {
           />
         ))}
       </ul>
-      <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <NoteForm createNote={addNote} />
-      </Togglable>
+
       <Footer />
     </div>
   );
