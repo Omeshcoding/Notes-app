@@ -1,13 +1,13 @@
 describe('Note app', function () {
   beforeEach(function () {
-    cy.request('POST', 'http://localhost:3001/api/testing/reset');
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`);
     const user = {
       name: 'Umesh Sharma',
       username: 'umeshds_',
       password: 'sdfjfkskooo',
     };
-    cy.request('POST', 'http://localhost:3001/api/users/', user);
-    cy.visit('http://localhost:3000');
+    cy.request('POST', `${Cypress.env('BACKEND')}/users/`, user);
+    cy.visit('');
   });
 
   it('front page can be opened', function () {
@@ -18,19 +18,18 @@ describe('Note app', function () {
   });
 
   it('login form can be opened', function () {
-    cy.contains('login').click();
-    cy.get('#username').type('umeshds_');
-    cy.get('#password').type('sdfjfkskooo');
-    cy.get('#login-button').click();
-
+    cy.login({
+      username: 'umeshds_',
+      password: 'sdfjfkskooo',
+    });
     cy.contains('Umesh Sharma logged in');
   });
   describe('when logged in', function () {
     beforeEach(function () {
-      cy.contains('login').click();
-      cy.get('#username').type('umeshds_');
-      cy.get('#password').type('sdfjfkskooo');
-      cy.get('#login-button').click();
+      cy.login({
+        username: 'umeshds_',
+        password: 'sdfjfkskooo',
+      });
     });
     it('a new note can be created', function () {
       cy.contains('new note').click();
@@ -41,9 +40,10 @@ describe('Note app', function () {
 
     describe('and a note exists', function () {
       beforeEach(function () {
-        cy.contains('new note').click();
-        cy.get('#noteinput').type('another note cypress');
-        cy.contains('save').click();
+        cy.createNote({
+          content: 'another note cypress',
+          important: true,
+        });
       });
       it('it can be made not important', function () {
         cy.contains('another note cypress')
