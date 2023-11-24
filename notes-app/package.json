@@ -17,7 +17,8 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "server": "json-server -p3002 --watch db.json",
     "test": "jest",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "test:e2e" : "cypress run"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {

@@ -35,14 +35,16 @@ describe('Note app', function () {
       cy.createNote({ content: 'third note', important: false });
     });
     it('one of those can be made important', function () {
-      cy.contains('second note').parent().find('button').click();
-
-      cy.contains('second note')
-        .parent()
-        .find('button')
-        .should('contain', 'make not important');
+      cy.contains('second note').parent().find('button').as('theButton');
+      cy.get('@theButton').click();
+      cy.get('@theButton').should('contain', 'make not important');
     });
-
+    it('then example', function () {
+      cy.get('button').then((buttons) => {
+        console.log('number of buttons', buttons.length);
+        cy.wrap(buttons[0]).click();
+      });
+    });
     it('a new note can be created', function () {
       cy.contains('new note').click();
       cy.get('#noteinput').type('a note created by cypress');
@@ -54,7 +56,7 @@ describe('Note app', function () {
       beforeEach(function () {
         cy.createNote({
           content: 'another note cypress',
-          important: true,
+          important: false,
         });
       });
       it('it can be made not important', function () {
