@@ -40,7 +40,7 @@ Cypress.Commands.add('createNote', ({ content, important }) => {
     body: { content, important },
     headers: {
       Authorization: `Bearer ${
-        JSON.parse(localStorage.gerItem('loggedNoteappUser')).token
+        JSON.parse(localStorage.getItem('loggedNoteappUser')).token
       }`,
     },
   });
