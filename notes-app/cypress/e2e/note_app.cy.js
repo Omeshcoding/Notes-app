@@ -69,17 +69,17 @@ describe('Note app', function () {
       });
     });
   });
-  // it.only('login fails with wrong password', function () {
-  //   cy.contains('login').click();
-  //   cy.get('#username').type('umeshds_');
-  //   cy.get('#password').type('wrong');
-  //   cy.get('#login-button').click();
+  it.only('login fails with wrong password', function () {
+    cy.contains('login').click();
+    cy.get('#username').type('umeshds_');
+    cy.get('#password').type('wrong');
+    cy.get('#login-button').click();
 
-  //   cy.get('.error')
-  //     .should('contain', 'Wrong credentials')
-  //     .should('have.css', 'border-style', 'solid')
-  //     .should('have.css', 'color', 'rgb(255, 0, 0)');
+    cy.get('.error')
+      .should('contain', 'Wrong credentials')
+      .should('have.css', 'border-style', 'solid')
+      .should('have.css', 'color', 'rgb(255, 0, 0)');
 
-  //   cy.contains('Umesh Sharma logged in').should('not.exist');
-  // });
+    cy.contains('Umesh Sharma logged in').should('not.exist');
+  });
 });
